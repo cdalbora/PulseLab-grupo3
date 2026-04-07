@@ -1,19 +1,28 @@
 def validar_registro(registro, claves):
     '''
-    verifica que cada diccionario dentro de 'claves':
-    
-    1. Exista dentro de 'registro'
-    2. Contenga los campos obligatorios
-    3. Que cada campo tenga el tipo correcto:
+    verifica que el registro contenga todas las claves requeridas
+    y que los valores tengan el tipo esperado:
     
     - "id_participante" → int
-    - "tiempo" → str
-    - "valor" → str
+    - "tiempo" → float
+    - "valor" → float
     - "fase" → str
     - "condicion_experimental" → str
-    - "hit" → str
+    - "hit" → int
+    
+    Parameters
+    ----------
+    registro : dict
+        Diccionario que representa un registro individual del experimento,
+        con claves como "id_participante", "tiempo", "valor", etc.
 
-    Return:
+    claves : list
+        Lista de strings con los nombres de las claves obligatorias
+        que el registro debe contener.
+        
+    Returns 
+    ----------
+        bool
         True si todo es válido
         False si alguna condición no se cumple
     '''
@@ -21,43 +30,23 @@ def validar_registro(registro, claves):
     for clave in claves:
         if clave not in registro:
             return False
-
-    for diccionario in claves:
-
-        id_participante = diccionario["id_participante"]
-        try:
-            id_participante + 0
-        except:
-            return False
-
-        tiempo = diccionario["tiempo"]
-        try:
-            tiempo + ""
-        except:
-            return False
-
-        valor = diccionario["valor"]
-        try:
-            valor + ""
-        except:
-            return False
-
-        fase = diccionario["fase"]
-        try:
-            fase + ""
-        except:
-            return False
-
-        condicion = diccionario["condicion_experimental"]
-        try:
-            condicion + ""
-        except:
-            return False
-
-        hit = diccionario["hit"]
-        try:
-            hit + ""
-        except:
-            return False
+        
+    if registro["tiempo"] < 0:
+        return False
+    
+    if registro["valor"] < 0:
+        return False
+    
+    try:
+        registro["id_participante"] + 0
+        registro["tiempo"] + 0.0
+        registro["valor"] + 0.0
+        registro["fase"] + ""
+        registro["condicion_experimental"] + ""
+        registro["hit"] + 0
+        
+    except:
+        return False
 
     return True
+   

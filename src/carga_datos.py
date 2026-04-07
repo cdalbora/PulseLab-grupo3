@@ -1,6 +1,8 @@
+from validacion_datos import validar_registro
+
 def parsear_linea(linea):
     """
-     Parsea los datos de una linea, separa los campos y los guarda en una lista.
+    Parsea los datos de una linea, separa los campos y los guarda en una lista.
 
     Parameters
     ----------
@@ -44,32 +46,27 @@ def cargar_datos(ruta):
     arch_datos.close()
     
     datos_totales = []
+    claves = ["id_participante", "tiempo", "valor", "fase", "condicion_experimental", "hit"]
     
     for linea in lista_lineas:
-        datos = parsear_linea(linea)
-        datos_totales.append(datos)
+        #intenta parsear
+        try:
+            datos = parsear_linea(linea)
+        except: 
+            continue #si el dato es de tipo incorrecto, lo saltea
         
-    datos_dict = {}
-    
-    for dato in datos_totales:
-        id_p, tiempo, valor, fase, cond_exp, hit = dato 
-        
-        if id_p not in datos_dict:
-            datos_dict[id_p] = { "id_participante":id_p,
-            "tiempo": [],
-            "valor": [],
-            "fase": [],
-            "condicion_experimental": [],
-            "hit": []
-            }   
-
-        datos_dict[id_p]["tiempo"].append(tiempo)
-        datos_dict[id_p]["valor"].append(valor)
-        datos_dict[id_p]["fase"].append(fase)
-        datos_dict[id_p]["condicion_experimental"].append(cond_exp) 
-        datos_dict[id_p]["hit"].append(hit)
-                
-    return list(datos_dict.values())
+        registro = {
+            "id_participante": datos[0],
+            "tiempo": datos[1],
+            "valor": datos[2],
+            "fase": datos[3],
+            "condicion_experimental": datos[4],
+            "hit": datos[5]
+        }
+        #Validar datos antes de añadir el diccionario a la lista de datos general
+        if validar_registro(registro, claves):
+            datos_totales.append(registro)
+    return datos_totales
                 
     
     
