@@ -13,15 +13,18 @@ def calcular_promedio_senal(datos):
     Returns
     -------
     promedio: float
-    El valor promedio de la señal. Si la lista de valores está vacía,
-    devuelve 0.
+    El valor promedio de la señal. 
+    
+    Raises
+    -------
+    ValueError: si la lista esta vacia
 
     '''
     valores= datos["valor"]
     suma=0
     promedio=0
     if len(valores) == 0:
-        return 0
+        raise ValueError("Lista vacía")
     else:
         suma=sum(valores)
         promedio=suma/len(valores)
@@ -43,10 +46,13 @@ def calcular_frecuencia_cardiaca(picos: list) -> float:
     -------
     frecuencia: float
         La cantidad de latidos por minuto 
-
+    
+    Raises
+    --------
+    ValueError: si hay menos de 2 latidos registrados
     '''
     if len(picos) < 2:
-        return 0
+        raise ValueError("No se puede calcular frecuencia de menos de 2 latidos")
     tiempo_total = picos[-1] - picos[0]
     cantidad_latidos = len(picos)
     
