@@ -1,9 +1,11 @@
-from carga_datos import cargar_datos
-from procesamiento_datos import filtrar_datos
-from metricas import calcular_promedio_senal, calcular_fc_desde_datos
+from src.carga_datos import cargar_datos
+from src.procesamiento_datos import filtrar_datos
+from src.metricas import calcular_promedio_senal, calcular_fc_desde_datos
+
+ruta="datos/PulseLab_mock_data.csv"
 
 #1. leer datos desde archivo
-datos = cargar_datos("datos.csv")
+datos = cargar_datos(ruta)
 
 #2. Filtrar datos (señal y tiempo)
 datos_filtrados = filtrar_datos(datos)

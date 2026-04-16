@@ -1,4 +1,4 @@
-from validacion_datos import validar_registro
+from src.validacion_datos import validar_registro
 
 def parsear_linea(linea):
     """
