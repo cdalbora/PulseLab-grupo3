@@ -17,6 +17,9 @@ def parsear_linea(linea):
     linea = linea.strip("\n")
     partes = linea.split(",")
     
+    if len(partes) != 6:
+        raise ValueError("Cantidad de campos inválida")
+        
     id_participante = int(partes[0])
     tiempo = float(partes[1])
     valor = float(partes[2])
@@ -66,7 +69,7 @@ def cargar_datos(ruta):
         #Validar datos antes de añadir el diccionario a la lista de datos general
         if validar_registro(registro, claves):
             datos_totales.append(registro)
-    return datos_totales
+    return datos_totales 
                 
     
     
