@@ -29,13 +29,13 @@ def validar_registro(registro, claves):
 
     for clave in claves:
         if clave not in registro:
-            return False
+            raise KeyError(f"Falta la clave obligatoria: {clave}")
         
     if registro["tiempo"] < 0:
-        return False
+        raise ValueError("El tiempo no puede ser negativo")
     
     if registro["valor"] < 0:
-        return False
+        raise ValueError("El valor no puede ser negativo")
     
     try:
         registro["id_participante"] + 0
@@ -45,7 +45,7 @@ def validar_registro(registro, claves):
         registro["condicion_experimental"] + ""
         registro["hit"] + 0
         
-    except:
+    except TypeError:
         return False
 
     return True
