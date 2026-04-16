@@ -30,7 +30,7 @@ def calcular_promedio_senal(datos):
         promedio=suma/len(valores)
     return promedio 
     
-def calcular_frecuencia_cardiaca(picos: list) -> float:
+def calcular_frecuencia_cardiaca(picos):
     '''
     Toma la lista de los tiempos donde se dieron los picos (latidos); si hay al 
     menos 2 picos(no se puede calcular frecuencia con un solo dato) calcula cuantos latidos 
@@ -49,7 +49,7 @@ def calcular_frecuencia_cardiaca(picos: list) -> float:
     
     Raises
     --------
-    ValueError: si hay menos de 2 latidos registrados
+    ValueError: si hay menos de 2 latidos registrados o si el tiempo total es 0
     '''
     if len(picos) < 2:
         raise ValueError("No se puede calcular frecuencia de menos de 2 latidos")
@@ -57,7 +57,7 @@ def calcular_frecuencia_cardiaca(picos: list) -> float:
     cantidad_latidos = len(picos)
     
     if tiempo_total == 0:
-        return 0
+        raise ValueError("Tiempo total invalido")
     
     frecuencia = (cantidad_latidos / tiempo_total) * 60
     return frecuencia
