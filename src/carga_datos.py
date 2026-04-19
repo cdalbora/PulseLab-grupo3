@@ -16,7 +16,7 @@ def parsear_linea(linea):
     """
     linea = linea.strip("\n")
     partes = linea.split(",")
-    
+    lista=[]
     if len(partes) != 6:
         raise ValueError("Cantidad de campos inválida")
         
@@ -25,9 +25,18 @@ def parsear_linea(linea):
     valor = float(partes[2])
     fase = str(partes[3])
     condicion_experimental = str(partes[4])
-    hit = int(partes[5])
+    if partes[5].strip() == "True":
+        hit = 1
+    else:
+        hit = 0
     
-    return [id_participante, tiempo, valor, fase, condicion_experimental, hit] 
+    lista.append(id_participante)
+    lista.append(tiempo)
+    lista.append(valor) 
+    lista.append(fase)
+    lista.append(condicion_experimental)
+    lista.append(hit)
+    return (lista)
 
 
 def cargar_datos(ruta):
@@ -55,9 +64,9 @@ def cargar_datos(ruta):
         #intenta parsear
         try:
             datos = parsear_linea(linea)
-        except: 
-            continue #si el dato es de tipo incorrecto, lo saltea
-        
+        except Exception as e: 
+            print(f"Error real: {e}")
+            raise ValueError("Tipo de valor incorrecto")
         registro = {
             "id_participante": datos[0],
             "tiempo": datos[1],
@@ -67,9 +76,13 @@ def cargar_datos(ruta):
             "hit": datos[5]
         }
         #Validar datos antes de añadir el diccionario a la lista de datos general
-        if validar_registro(registro, claves):
-            datos_totales.append(registro)
+        
+        if not validar_registro(registro, claves):
+            raise ValueError(f"Registro inválido: {registro}")
+        datos_totales.append(registro)  # solo llega acá si es válido
+        
     return datos_totales 
+
                 
     
     
