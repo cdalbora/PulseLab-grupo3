@@ -20,6 +20,7 @@ def filtrar_datos(datos):
             * "total_registros": cantidad total de registros.
 
     '''
+    
     valores = []
     tiempos = []
     hits = 0
