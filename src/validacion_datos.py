@@ -1,52 +1,47 @@
-def validar_registro(registro, claves):
-    '''
-    verifica que el registro contenga todas las claves requeridas
-    y que los valores tengan el tipo esperado:
-    
-    - "id_participante" → int
-    - "tiempo" → float
-    - "valor" → float
-    - "fase" → str
-    - "condicion_experimental" → str
-    - "hit" → int
-    
+import pandas as pd
+
+TIPOS_ESPERADOS = {
+    "id_participante": (int,),
+    "tiempo": (float, int),
+    "valor": (float, int),
+    "fase": (str,),
+    "condicion_experimental": (str,),
+    "hit": (int,),
+}
+
+COLUMNAS_REQUERIDAS = list(TIPOS_ESPERADOS.keys())
+
+
+def validar_dataframe(df: pd.DataFrame) -> None:
+    """
+    Valida que el DataFrame contenga todas las columnas requeridas,
+    que los tipos sean los esperados y que no haya valores negativos
+    en tiempo ni en valor.
+
     Parameters
     ----------
-    registro : dict
-        Diccionario que representa un registro individual del experimento,
-        con claves como "id_participante", "tiempo", "valor", etc.
+    df : pd.DataFrame
+        DataFrame con los registros del experimento.
 
-    claves : list
-        Lista de strings con los nombres de las claves obligatorias
-        que el registro debe contener.
-        
-    Returns 
-    ----------
-        bool
-        True si todo es válido
-        False si alguna condición no se cumple
-    '''
+    Raises
+    ------
+    KeyError
+        Si falta alguna columna obligatoria.
+    ValueError
+        Si hay valores negativos en tiempo o valor.
+    TypeError
+        Si alguna columna tiene un tipo incompatible.
+    """
+    for col in COLUMNAS_REQUERIDAS:
+        if col not in df.columns:
+            raise KeyError(f"Falta la columna obligatoria: '{col}'")
 
-    for clave in claves:
-        if clave not in registro:
-            raise KeyError(f"Falta la clave obligatoria: {clave}")
-        
-    if registro["tiempo"] < 0:
-        raise ValueError("El tiempo no puede ser negativo")
-    
-    if registro["valor"] < 0:
-        raise ValueError("El valor no puede ser negativo")
-    
-    try:
-        registro["id_participante"] + 0
-        registro["tiempo"] + 0.0
-        registro["valor"] + 0.0
-        registro["fase"] + ""
-        registro["condicion_experimental"] + ""
-        registro["hit"] + 0
-        
-    except TypeError:
-        return False
+    if (df["tiempo"] < 0).any():
+        raise ValueError("Hay valores negativos en la columna 'tiempo'")
 
-    return True
-   
+    if (df["valor"] < 0).any():
+        raise ValueError("Hay valores negativos en la columna 'valor'")
+
+    for col, tipos in TIPOS_ESPERADOS.items():
+        if not all(isinstance(v, tipos) for v in df[col]):
+            raise TypeError(f"La columna '{col}' contiene valores de tipo incorrecto")

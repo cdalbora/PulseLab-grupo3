@@ -1,40 +1,21 @@
+import pandas as pd
 
-def filtrar_datos(datos):
-    '''
-    Prepara los datos de PulseLab para el análisis, reuniendo
-    los valores de la señal, los tiempos y la cantidad de hits.
+def filtrar_datos(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Filtra el DataFrame conservando solo las columnas necesarias para
+    el análisis (tiempo y valor) y agrega una columna con el total de hits.
 
     Parameters
     ----------
-    datos : lista
-
-        lista de diccionarios con registros validados del experimento.
+    df : pd.DataFrame
+        DataFrame con los registros validados del experimento.
 
     Returns
     -------
-    dict
-        - diccionario con:
-            * "valor": lista de valores de la señal
-            * "tiempo": lista de tiempos
-            * "hit": cantidad de hits detectados
-            * "total_registros": cantidad total de registros.
-
-    '''
-    
-    valores = []
-    tiempos = []
-    hits = 0
-
-    for registro in datos:
-        valores.append(registro["valor"])
-        tiempos.append(registro["tiempo"])
-
-        if registro["hit"] == 1 or registro["hit"] == "1" or registro["hit"] == True:
-            hits += 1
-
-    return {
-        "valor": valores,
-        "tiempo": tiempos,
-        "hit": hits,
-        "total_registros": len(datos)
-    }
+    pd.DataFrame
+        DataFrame con las columnas 'tiempo' y 'valor', ordenado por tiempo,
+        con el índice reseteado.
+    """
+    df_filtrado = df[["tiempo", "valor"]].copy()
+    df_filtrado = df_filtrado.sort_values("tiempo").reset_index(drop=True)
+    return df_filtrado

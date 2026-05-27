@@ -1,73 +1,77 @@
+import pandas as pd
+from src.utils_ecg import detectar_picos_qrs
 
-def calcular_promedio_senal(datos):
-    '''
-    Calcula el promedio de la señal ECG de un participante
+
+def calcular_promedio_senal(df: pd.DataFrame) -> float:
+    """
+    Calcula el promedio de la señal ECG.
 
     Parameters
     ----------
-    datos : diccionario
-      Diccionario que contiene la información del participante,
-      incluyendo la clave "valor", que es una lista de valores de la señal ECG.
-
+    df : pd.DataFrame
+        DataFrame que contiene la columna 'valor'.
 
     Returns
     -------
-    promedio: float
-    El valor promedio de la señal. 
-    
-    Raises
-    -------
-    ValueError: si la lista esta vacia
+    float
+        Valor promedio de la señal.
 
-    '''
-    valores= datos["valor"]
-    suma=0
-    promedio=0
-    if len(valores) == 0:
-        raise ValueError("Lista vacía")
-    else:
-        suma=sum(valores)
-        promedio=suma/len(valores)
-    return promedio 
-    
-def calcular_frecuencia_cardiaca(picos):
-    '''
-    Toma la lista de los tiempos donde se dieron los picos (latidos); si hay al 
-    menos 2 picos(no se puede calcular frecuencia con un solo dato) calcula cuantos latidos 
-    hubo por minuto a partir de la cantidad de latidos y cuanto tiempo paso entre el primer
-    y el ultimo pico
-                                                                             
+    Raises
+    ------
+    ValueError
+        Si el DataFrame está vacío.
+    """
+    if df.empty:
+        raise ValueError("El DataFrame está vacío, no se puede calcular el promedio")
+    return float(df["valor"].mean())
+
+
+def calcular_frecuencia_cardiaca(picos: list) -> float:
+    """
+    Calcula la frecuencia cardíaca en latidos por minuto a partir de
+    los tiempos de los picos detectados.
+
     Parameters
     ----------
     picos : list
-        Lista de tiempos donde se dieron los picos de los latidos
+        Lista de tiempos donde se detectaron picos R.
 
     Returns
     -------
-    frecuencia: float
-        La cantidad de latidos por minuto 
-    
+    float
+        Frecuencia cardíaca en latidos por minuto.
+
     Raises
-    --------
-    ValueError: si hay menos de 2 latidos registrados o si el tiempo total es 0
-    '''
+    ------
+    ValueError
+        Si hay menos de 2 picos o si el tiempo total es 0.
+    """
     if len(picos) < 2:
-        raise ValueError("No se puede calcular frecuencia de menos de 2 latidos")
+        raise ValueError("No se puede calcular la frecuencia con menos de 2 latidos")
+
     tiempo_total = picos[-1] - picos[0]
-    cantidad_latidos = len(picos)
-    
     if tiempo_total == 0:
-        raise ValueError("Tiempo total invalido")
-    
-    frecuencia = (cantidad_latidos / tiempo_total) * 60
+        raise ValueError("Tiempo total inválido (igual a 0)")
+
+    frecuencia = (len(picos) / tiempo_total) * 60
     return frecuencia
-    
-from src.utils_ecg import detectar_picos_qrs
-def calcular_fc_desde_datos(datos):
-    tiempos = []
-    senal = []
-    for d in datos:
-        tiempos.append(d["tiempo"])
-        senal.append(d["valor"])
+
+
+def calcular_fc_desde_datos(df: pd.DataFrame) -> float:
+    """
+    Detecta picos QRS en la señal y calcula la frecuencia cardíaca.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        DataFrame con columnas 'tiempo' y 'valor'.
+
+    Returns
+    -------
+    float
+        Frecuencia cardíaca en latidos por minuto.
+    """
+    tiempos = df["tiempo"].tolist()
+    senal = df["valor"].tolist()
     picos = detectar_picos_qrs(tiempos, senal)
     return calcular_frecuencia_cardiaca(picos)
