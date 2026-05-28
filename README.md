@@ -18,15 +18,29 @@ ValueError: para cálculos de promedios, ya que no se puede dividir por cero; pa
 
 
 
+
+
 **IMPLEMENTACIÓN CON PANDAS**
 
-**Funciones que habría que modificar**
+**Funciones que fueron modificadas**
 
-* **carga\_datos.py:** es la que más cambiaría. Todo el proceso de lectura, parseo y conversión de tipos se reemplaza por una sola instrucción de pandas.
-* **validacion\_datos.py**: la validación de tipos y valores se haría sobre el dataset completo en lugar de registro por registro.
-* **procesamiento\_datos.py:** el filtrado de valores y el conteo de hits se simplifica con operaciones directas de pandas.
-* **main.py**: el filtrado por ID de participante se reduce a una línea.
+* **carga\_datos.py:** es la que más cambió. En lugar de recorrer el archivo línea por línea, convertir cada campo manualmente y armar diccionarios, pandas lee el archivo completo de una sola vez y construye la tabla automáticamente.
+* **validacion\_datos.py:** antes se validaba cada registro uno por uno. Ahora la validación se hace sobre todos los datos a la vez, lo que simplifica bastante el código.
+* **procesamiento\_datos.py:** el filtrado y el conteo de hits se simplificaron, aprovechando que pandas permite hacer operaciones sobre columnas enteras directamente en lugar de recorrer los registros con un loop.
+* **metricas.py:** el cálculo del promedio y la preparación de los datos para detectar picos se adaptaron para trabajar con la nueva estructura de tabla en lugar de listas y diccionarios.
+* **main.py:** el filtrado por participante se simplificó. Además se agregó la creación automática de la carpeta donde se guardan los gráficos, y dos funciones nuevas que generan y guardan las visualizaciones al finalizar el análisis.
 
-**Funciones que no cambiarían**
-metricas.py y utils\_ecg.py trabajan sobre listas de valores numéricos, por lo que no requerirían modificaciones.
+
+
+**Función que no cambió**
+
+* **utils\_ecg.py:** su lógica trabaja directamente sobre valores numéricos, por lo que no necesitó ninguna modificación.
+
+
+
+
+
+
+
+
 
