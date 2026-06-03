@@ -1,0 +1,21 @@
+Bitácora de ingeniería de prompts 
+Para este trabajo se utilizo la IA Claude
+
+1. Prompt Semilla
+El primer prompt que usé para inicializar el chat fue adjuntar los seis archivos del proyecto y pedir únicamente la adaptación a Streamlit:
+"tengo que modificar este trabajo para agregarle una interfaz web con Streamlit. acá están los archivos que ya tengo."
+
+2. Registro de Iteraciones e Historial de Correcciones
+Hubo dos correcciones principales:
+
+Corrección 1 — la IA generó el dashboard como un único archivo sin respetar la estructura modular del proyecto, llamando directamente a las funciones en lugar de reutilizar los módulos existentes. 
+El prompt de corrección fue: "esto ya lo hiciste? revisa los archivos: Carga de Datos; Validación; Métricas, etc.” 
+A partir de ahí la IA reajustó el código para que app.py se apoyara correctamente en los módulos existentes.
+
+Corrección 2 — las instrucciones del README para correr Streamlit asumían que el usuario tenía Anaconda o pip disponible en el sistema, lo cual no era mi caso. 
+El prompt de corrección fue:
+"no tengo Anaconda Prompt, no me aparece. Que otra manera existe de ejecutar el archivo? Que sea lo más simple posible"
+Asi fue como la IA fue ajustando las instrucciones hasta encontrar el comando que funcionó en mi computadora, que fue usando el cmd de Windows (un espacio ya integrado a la computadora donde se podía correr código que descubrimos gracias a la IA) con la ruta completa a Python de Spyder. 
+
+3. Reflexión Técnica
+La estrategia que mejor funcionó fue pedir cada parte de la consigna por separado y verificar cada entrega antes de avanzar a la siguiente. Primero pedimos el código del dashboard, realizamos correcciones, y finalmente le pedimos la guía de ejecución para que cualquier persona pueda visualizar el programa desde su propia computadora. Cada vez que algo no funcionaba o no se entendía lo señalamos de forma directa y concreta, lo que le permitió a la IA corregir sin perder el contexto del proyecto. Esta forma de trabajar por módulos en vez de ingresar todas las consignas a la vez redujo la cantidad de errores y mantuvo el código alineado con la estructura que ya teníamos.
