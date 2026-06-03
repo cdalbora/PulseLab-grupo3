@@ -40,7 +40,25 @@ ValueError: para cálculos de promedios, ya que no se puede dividir por cero; pa
 
 
 
+**Guía de Ejecución de la Interfaz Web**
 
+
+
+1. Para correr el dashboard interactivo, abrir el buscador de Windows, buscar y abrir cmd. Una vez abierto, ejecutar el siguiente comando reemplazando las rutas por las de su computadora:
+"C:\\ruta\\a\\python.exe" -m streamlit run "C:\\ruta\\a\\tu\\proyecto\\app.py"
+
+2. Para encontrar la ruta de Python correcta, abrir Spyder y ejecutar en la consola:
+python
+import sys
+print(sys.executable)
+
+3. Copiar el resultado y usarlo como primera ruta. La segunda ruta es simplemente la ubicación de app.py en su computadora.
+
+4. Una vez ejecutado el comando, presionar Enter cuando pregunte por el email y el navegador se abrirá automáticamente con la aplicación. Si no abre solo, copiar http://localhost:8501 en el navegador.
+
+* **Si Streamlit no está instalado, antes de correr el dashboard se debe ejecutar**
+
+&#x20;  **"C:\\ruta\\a\\python.exe" -m pip install streamlit**
 
 
 
